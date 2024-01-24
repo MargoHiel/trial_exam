@@ -1,0 +1,83 @@
+query 1: 
+select distinct guestaddress, guestname, hotel.city from guest join booking on guest.guestno = booking.guestno join hotel on hotel.hotelno = booking.hotelno where hotel.city = "London" order by guestname;
++-----------------------+--------------+--------+
+| guestaddress          | guestname    | city   |
++-----------------------+--------------+--------+
+| 6 Achray St, Glasgow  | Carol Farrel | London |
+| 2 Fergus Dr, Aberdeen | Joe Keogh    | London |
+| 56 High St, London    | John Kay     | London |
+| 18 Tain St, London    | Mike Ritchie | London |
+| 63 Well St, Glasgow   | Tina Murphy  | London |
++-----------------------+--------------+--------+
+
+query2:
+select * from room where (type = "family" or type = "double") and price < 40.00 order by price;
++--------+---------+--------+-------+
+| roomno | hotelno | type   | price |
++--------+---------+--------+-------+
+|    801 | ch02    | double | 15.00 |
+|    601 | fb01    | double | 29.00 |
+|   1001 | dc01    | double | 30.00 |
+|   1101 | dc01    | family | 35.00 |
+|    701 | fb01    | family | 39.00 |
++--------+---------+--------+-------+
+5 rows in set (0.001 sec)
+
+query 3:
+select * from booking where dateto is null;
++---------+---------+------------+--------+--------+
+| hotelno | guestno | datefrom   | dateto | roomno |
++---------+---------+------------+--------+--------+
+| ch01    |   10006 | 2023-04-21 | NULL   |   1101 |
+| dc01    |   10003 | 2023-05-20 | NULL   |   1001 |
+| fb01    |   10001 | 2023-05-01 | NULL   |    701 |
++---------+---------+------------+--------+--------+
+3 rows in set (0.001 sec)
+
+query 4:
+select avg(price) as average from room;
++-----------+
+| average   |
++-----------+
+| 35.748333 |
++-----------+
+1 row in set (0.001 sec)
+
+query 5:
+select sum(price) as revenue from room where type = "double";
++---------+
+| revenue |
++---------+
+|  160.00 |
++---------+
+1 row in set (0.000 sec)
+
+query 6:
+select distinct(count(guestname)), datefrom, dateto from guest join booking on guest.guestno = booking.guestno where month(date
+from)=08 or month(dateto)=08;
++--------------------+----------+--------+
+| (count(guestname)) | datefrom | dateto |
++--------------------+----------+--------+
+|                  0 | NULL     | NULL   |
++--------------------+----------+--------+
+1 row in set (0.001 sec)
+
+query 8:
+select room.type, room.price, hotel.hotelname from hotel join room on hotel.hotelno = room.hotelno where hotel.hotelname = "Omni Shoreham";
++--------+-------+---------------+
+| type   | price | hotelname     |
++--------+-------+---------------+
+| single | 29.99 | Omni Shoreham |
+| family | 59.99 | Omni Shoreham |
++--------+-------+---------------+
+2 rows in set (0.001 sec)
+
+query 9: 
+select guest.guestname from guest join booking on guest.guestno = booking.guestno join hotel on booking.hotelno = hotel.hotelno where hotelname = "Omni Shoreham";
++-------------+
+| guestname   |
++-------------+
+| Tina Murphy |
++-------------+
+1 row in set (0.000 sec)
+

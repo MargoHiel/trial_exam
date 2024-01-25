@@ -1,0 +1,35 @@
+# Exercise on data normalization
+
+UNF:
+db(staffNo, denstistName, patientNo, patientName, appointment[date, time], surgeryNo)
+
+1NF:
+- all data present
+- choose primary key: staffNo, apptDate, apptTime
+- no repeating groups
+
+db(*staffNo*, dentistName, patientNo, patientName, *apptDate*, *apptTime*, surgeryNo)
+
+2NF:
+- no partial dependencies: all non PK parts should depend on the entire PK
+	- dentistName: only depends on staff number
+	- patientNo: ok
+	- patientName: ok
+	- surgeryNo: only depends on staffNo and apptDate
+
+- all tables in 1NF
+
+db(*staffNo*,  patientNo, patientName, *apptDate*, *apptTime*)
+staff(*staffNo*, dentistName)
+surgery(*staffNo, *apptDate*, surgeryNo)
+
+3NF: 
+- no transitive dependencies: non key attributes may not be dependent on other non-key attributes
+	-patientNo: depends on patientName and vice versa!
+	- rest is ok 
+- all tables in 2NF
+
+appointment(*staffNo*,  patientNo, *apptDate*, *apptTime*)
+patient(*patientNo*, patientName)
+staff(*staffNo*, dentistName)
+surgery(*staffNo, *apptDate*, surgeryNo)
